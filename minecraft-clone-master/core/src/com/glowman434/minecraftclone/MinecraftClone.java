@@ -92,5 +92,6 @@ public class MinecraftClone extends ApplicationAdapter {
 	public void dispose() {
 		model_batch.dispose();
 		grid.dispose();
+		font.dispose();
 	}
 }
