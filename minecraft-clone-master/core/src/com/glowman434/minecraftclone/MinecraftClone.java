@@ -82,7 +82,7 @@ public class MinecraftClone extends ApplicationAdapter {
 		float crosshair_x = (Gdx.graphics.getWidth() - crosshair_size) / 2;
 		float crosshair_y = (Gdx.graphics.getHeight() - crosshair_size) / 2;
 		sprite_batch.begin();
-		System.out.println(frameRate);
+		//System.out.println(frameRate);
 		font.draw(sprite_batch, (int)frameRate + " FPS", 10, Gdx.graphics.getHeight() - 3);
 		sprite_batch.draw(crosshair, crosshair_x, crosshair_y, crosshair_size, crosshair_size);
 		sprite_batch.end();

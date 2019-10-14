@@ -168,6 +168,8 @@ public class Grid implements Disposable {
 	public void Berry(int x, int y, int z, int size) {
 		try {
 			field[x][y][z] = new BerryBlock();
+			System.out.println("BerryCreate " + x + "," + y + "," + z);
+			updatePosition();
 		}catch (Exception e) {
 			System.out.println("BerryCreat: "+e);
 		}
