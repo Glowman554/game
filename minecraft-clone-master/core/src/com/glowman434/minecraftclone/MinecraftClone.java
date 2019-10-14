@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 
-public class MinecraftClone extends ApplicationAdapter {
+public class MinecraftClone extends ApplicationAdapter{
 	public final float field_of_view = 67;
 	public final float camera_near = 1;
 	public final float camera_far = 300;
@@ -20,6 +20,7 @@ public class MinecraftClone extends ApplicationAdapter {
 	public final float camera_degrees_per_pixel = 0.08f;
 	public final float crosshair_size = 25;
 	public int frameRate;
+	public String username;
 
 	public FPSControll camera_controller;
 	public Environment environment;
@@ -30,6 +31,10 @@ public class MinecraftClone extends ApplicationAdapter {
 	public Texture crosshair;
 	private BitmapFont font;
 	
+	public MinecraftClone(String name) {
+		username = name;
+	}
+
 	@Override
 	public void create() {
 		model_batch = new ModelBatch();
@@ -84,6 +89,7 @@ public class MinecraftClone extends ApplicationAdapter {
 		sprite_batch.begin();
 		//System.out.println(frameRate);
 		font.draw(sprite_batch, (int)frameRate + " FPS", 10, Gdx.graphics.getHeight() - 3);
+		font.draw(sprite_batch, username, 10, Gdx.graphics.getHeight() - 27);
 		sprite_batch.draw(crosshair, crosshair_x, crosshair_y, crosshair_size, crosshair_size);
 		sprite_batch.end();
 	}
