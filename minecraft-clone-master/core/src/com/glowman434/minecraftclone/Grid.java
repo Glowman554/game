@@ -101,9 +101,33 @@ public class Grid implements Disposable {
 						field[x][y][z] = null;
 						updatePosition();
 					}
-				} else if (type == Block.Type.DirtBlock) {
-					field[last_point_x][last_point_y][last_point_z] = new DirtBlock();
-					updatePosition();
+				}else {
+					switch(type) {
+					case DirtBlock:
+						field[last_point_x][last_point_y][last_point_z] = new DirtBlock();
+						updatePosition();
+						break;
+					case WoodBlock:
+						field[last_point_x][last_point_y][last_point_z] = new WoodBlock();
+						updatePosition();
+						break;
+					case BerryBlock:
+						field[last_point_x][last_point_y][last_point_z] = new BerryBlock();
+						updatePosition();
+						break;
+					case LeavesBlock:
+						field[last_point_x][last_point_y][last_point_z] = new LeavesBlock();
+						updatePosition();
+						break;
+					case GlassBlock:
+						field[last_point_x][last_point_y][last_point_z] = new GlassBlock();
+						updatePosition();
+						break;
+					case StoneBlock:
+						field[last_point_x][last_point_y][last_point_z] = new StoneBlock();
+						updatePosition();
+						break;
+					}
 				}
 				break;
 			}

@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 
+import javafx.scene.text.FontPosture;
+
 public class MinecraftClone extends ApplicationAdapter{
 	public final float field_of_view = 67;
 	public final float camera_near = 1;
@@ -21,6 +23,8 @@ public class MinecraftClone extends ApplicationAdapter{
 	public final float crosshair_size = 25;
 	public int frameRate;
 	public String username;
+	public Block.Type currentBlock;
+	public String nameBlock;
 
 	public FPSControll camera_controller;
 	public Environment environment;
@@ -60,7 +64,7 @@ public class MinecraftClone extends ApplicationAdapter{
 			@Override
 			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 				if (button == 0) {
-					grid.editBoxByRayCast(camera.position, camera.direction, Block.Type.DirtBlock);
+					grid.editBoxByRayCast(camera.position, camera.direction, currentBlock);
 				} else if (button == 1) {
 					grid.editBoxByRayCast(camera.position, camera.direction, null);
 				}
@@ -75,6 +79,29 @@ public class MinecraftClone extends ApplicationAdapter{
 
 	@Override
 	public void render() {
+		currentBlock = camera_controller.getCurrentBlock();
+		switch(currentBlock) {
+		case DirtBlock:
+			nameBlock = "DirtBlock";
+			break;
+		case WoodBlock:
+			nameBlock = "WoodBlock";
+			break;
+		case BerryBlock:
+			nameBlock = "BerryBlock";
+			break;
+		case LeavesBlock:
+			nameBlock = "LeavesBlock";
+			break;
+		case GlassBlock:
+			nameBlock = "GlassBlock";
+			break;
+		case StoneBlock:
+			nameBlock = "StoneBlock";
+			break;
+		}
+		
+		
 		frameRate = Gdx.graphics.getFramesPerSecond();
 		camera_controller.update();
 		Gdx.gl.glClearColor(0.5f, 0.8f, 1f, 1f);
@@ -89,7 +116,8 @@ public class MinecraftClone extends ApplicationAdapter{
 		sprite_batch.begin();
 		//System.out.println(frameRate);
 		font.draw(sprite_batch, (int)frameRate + " FPS", 10, Gdx.graphics.getHeight() - 3);
-		font.draw(sprite_batch, username, 10, Gdx.graphics.getHeight() - 27);
+		font.draw(sprite_batch, username, 10, Gdx.graphics.getHeight() - 25 - 3);
+		font.draw(sprite_batch, nameBlock, 10, Gdx.graphics.getHeight() - 25 - 25 - 3);
 		sprite_batch.draw(crosshair, crosshair_x, crosshair_y, crosshair_size, crosshair_size);
 		sprite_batch.end();
 	}
