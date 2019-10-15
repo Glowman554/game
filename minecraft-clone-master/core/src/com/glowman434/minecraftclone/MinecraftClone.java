@@ -116,8 +116,8 @@ public class MinecraftClone extends ApplicationAdapter{
 		sprite_batch.begin();
 		//System.out.println(frameRate);
 		font.draw(sprite_batch, (int)frameRate + " FPS", 10, Gdx.graphics.getHeight() - 3);
-		font.draw(sprite_batch, username, 10, Gdx.graphics.getHeight() - 25 - 3);
-		font.draw(sprite_batch, nameBlock, 10, Gdx.graphics.getHeight() - 25 - 25 - 3);
+		font.draw(sprite_batch, username, 10, Gdx.graphics.getHeight() - 27);
+		font.draw(sprite_batch, nameBlock, 10, Gdx.graphics.getHeight() - 56);
 		sprite_batch.draw(crosshair, crosshair_x, crosshair_y, crosshair_size, crosshair_size);
 		sprite_batch.end();
 	}
