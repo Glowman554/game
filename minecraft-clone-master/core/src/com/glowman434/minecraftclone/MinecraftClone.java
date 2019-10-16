@@ -12,8 +12,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 
-import javafx.scene.text.FontPosture;
-
 public class MinecraftClone extends ApplicationAdapter{
 	public final float field_of_view = 67;
 	public final float camera_near = 1;
@@ -25,6 +23,7 @@ public class MinecraftClone extends ApplicationAdapter{
 	public String username;
 	public Block.Type currentBlock;
 	public String nameBlock;
+	private String prefix = "[MinecraftClone] ";
 
 	public FPSControll camera_controller;
 	public Environment environment;

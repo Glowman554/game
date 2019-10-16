@@ -11,6 +11,7 @@ public class Grid implements Disposable {
 	private final int grid_size = 50;
 	private final float field_size = 5;
 	private Block field[][][];
+	private String prefix = "[Grid] ";
 
 	public Grid() {
 		Random rand = new Random();
@@ -165,10 +166,10 @@ public class Grid implements Disposable {
 			field[x][y+3][z+1] = new LeavesBlock();
 			field[x][y+2][z-1] = new LeavesBlock();
 			field[x][y+3][z-1] = new LeavesBlock();
-			System.out.println("TreeCreate " + x + "," + y + "," + z);
+			System.out.println(prefix + "TreeCreate " + x + "," + y + "," + z);
 			updatePosition();
 		}catch (Exception e) {
-			System.out.println("TreeCreat: "+e);
+			System.out.println(prefix + "TreeCreat: "+e);
 			try {
 				field[x][y][z] = null;
 				field[x][y+1][z] = null;
@@ -185,17 +186,17 @@ public class Grid implements Disposable {
 				field[x][y+3][z-1] = null;
 				updatePosition();
 			}catch (Exception e2) {
-				System.out.println("TreeCreat: "+e2);
+				System.out.println(prefix + "TreeCreat: "+e2);
 			}
 	    }
 	}
 	public void Berry(int x, int y, int z, int size) {
 		try {
 			field[x][y][z] = new BerryBlock();
-			System.out.println("BerryCreate " + x + "," + y + "," + z);
+			System.out.println(prefix + "BerryCreate " + x + "," + y + "," + z);
 			updatePosition();
 		}catch (Exception e) {
-			System.out.println("BerryCreat: "+e);
+			System.out.println(prefix + "BerryCreat: "+e);
 		}
 	}
 }

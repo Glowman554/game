@@ -5,11 +5,11 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.utils.FirstPersonCameraController;
 import com.glowman434.minecraftclone.Block.Type;
-import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
 
 public class FPSControll extends FirstPersonCameraController {
 	
 	public Block.Type currentBlock = Type.DirtBlock;
+	private String prefix = "[FPSControll] ";
 
 	public FPSControll(Camera camera) {
 		super(camera);
@@ -27,26 +27,31 @@ public class FPSControll extends FirstPersonCameraController {
 		case Keys.ESCAPE:
 			Gdx.app.exit();
 			break;
-		case Keys.F1:
+		case Keys.NUM_1:
 			currentBlock = Type.BerryBlock;
+			System.out.println(prefix + "Block select " + currentBlock);
 			break;
-		case Keys.F2:
+		case Keys.NUM_2:
 			currentBlock = Type.DirtBlock;
+			System.out.println(prefix + "Block select " + currentBlock);
 			break;
-		case Keys.F3:
+		case Keys.NUM_3:
 			currentBlock = Type.GlassBlock;
+			System.out.println(prefix + "Block select " + currentBlock);
 			break;
-		case Keys.F4:
+		case Keys.NUM_4:
 			currentBlock = Type.LeavesBlock;
+			System.out.println(prefix + "Block select " + currentBlock);
 			break;
-		case Keys.F5:
+		case Keys.NUM_5:
 			currentBlock = Type.StoneBlock;
+			System.out.println(prefix + "Block select " + currentBlock);
 			break;
-		case Keys.F6:
+		case Keys.NUM_6:
 			currentBlock = Type.WoodBlock;
+			System.out.println(prefix + "Block select " + currentBlock);
 			break;
 		}
-		System.out.println("Block select " + currentBlock);
 		return super.keyDown(keycode);
 	}
 	
