@@ -1,20 +1,54 @@
 package com.glowman434.minecraftclone;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 import java.util.Random;
 
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
-public class Grid implements Disposable {
+public class Grid extends JPanel implements Disposable  {
 	private final int grid_size = 50;
 	private final float field_size = 5;
 	private Block field[][][];
 	private String prefix = "[Grid] ";
+    private JProgressBar progressBar;
+
 
 	public Grid() {
+		
+		
+		super(new BorderLayout());
+		JDialog dialog = new JDialog();
+		dialog.setTitle("Generating World");
+		dialog.setSize(180,70);
 		Random rand = new Random();
+		progressBar = new JProgressBar(0, grid_size);
+		progressBar.setValue(0);
+		progressBar.setStringPainted(true);
+		JPanel panel = new JPanel();
+		panel.add(progressBar);
+		add(panel, BorderLayout.PAGE_START);
+		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		dialog.add(panel);
+		dialog.setVisible(true);
+		
+		
 		field = new Block[grid_size][grid_size][grid_size];
 		for (int i = 0; i < grid_size; i++) {
 			for (int k = 0; k < grid_size; k++) {
@@ -28,8 +62,10 @@ public class Grid implements Disposable {
 					Berry(i, 1, k, grid_size);
 					break;
 				}
+				progressBar.setValue(i);
 			}
 		}
+		dialog.setVisible(false);
 		updatePosition();
 	}
 
