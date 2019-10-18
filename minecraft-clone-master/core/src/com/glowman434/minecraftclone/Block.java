@@ -19,10 +19,8 @@ public class Block implements Disposable {
 	private Material material;
 	private Model model;
 	private ModelInstance instance;
-	private Type type;
-
+	
 	public Block(Texture texture, Type type) {
-		this.type = type;
 		material = new Material(TextureAttribute.createDiffuse(texture));
 		modelBuilder.begin();
 		modelBuilder.node();

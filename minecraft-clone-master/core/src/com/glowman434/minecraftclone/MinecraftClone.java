@@ -74,6 +74,7 @@ public class MinecraftClone extends ApplicationAdapter{
 		camera_controller.setVelocity(camera_velocity);
 		Gdx.input.setInputProcessor(camera_controller);
 		Gdx.input.setCursorCatched(true);
+		System.out.println(prefix + "Done Create");
 	}
 
 	@Override

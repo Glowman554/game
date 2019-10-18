@@ -1,8 +1,6 @@
 package com.glowman434.minecraftclone;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -10,19 +8,13 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Grid extends JPanel implements Disposable  {
+	private static final long serialVersionUID = -2420530188123215913L;
 	private final int grid_size = 50;
 	private final float field_size = 5;
 	private Block field[][][];
