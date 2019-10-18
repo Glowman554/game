@@ -8,13 +8,14 @@ import com.glowman434.minecraftclone.MinecraftClone;
 public class DesktopLauncher {
 	
 	public static String name;
+	public static String prefix = "[DesktopLauncher] ";
 	
 	public static void main (String[] args) {
 		try{
-			System.out.println(args[0]);
+			System.out.println(prefix + args[0]);
 			name = args[0];
 		}catch(Exception e) {
-			System.out.println(e);
+			System.out.println(prefix + e);
 			name = "null";
 		}
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
