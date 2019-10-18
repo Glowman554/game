@@ -38,7 +38,7 @@ public class Grid extends JPanel implements Disposable  {
 		dialog.setTitle("Generating World");
 		dialog.setSize(180,70);
 		Random rand = new Random();
-		progressBar = new JProgressBar(0, grid_size);
+		progressBar = new JProgressBar(0, grid_size - 1);
 		progressBar.setValue(0);
 		progressBar.setStringPainted(true);
 		JPanel panel = new JPanel();
