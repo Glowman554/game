@@ -8,6 +8,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -20,6 +22,11 @@ public class Grid extends JPanel implements Disposable  {
 	private Block field[][][];
 	private String prefix = "[Grid] ";
     private JProgressBar progressBar;
+    private Sound wood = Gdx.audio.newSound(Gdx.files.internal("sound/wood.ogg"));
+    private Sound stone = Gdx.audio.newSound(Gdx.files.internal("sound/stone.ogg"));
+    private Sound grass = Gdx.audio.newSound(Gdx.files.internal("sound/grass.ogg"));
+    private Sound leave = Gdx.audio.newSound(Gdx.files.internal("sound/leave.ogg"));
+    private Sound berry = Gdx.audio.newSound(Gdx.files.internal("sound/berry.ogg"));
 
 
 	public Grid() {
@@ -91,6 +98,11 @@ public class Grid extends JPanel implements Disposable  {
 
 	@Override
 	public void dispose() {
+		wood.dispose();
+		stone.dispose();
+		grass.dispose();
+		leave.dispose();
+		berry.dispose();
 		for (int i = 0; i < grid_size; i++) {
 			for (int j = 0; j < grid_size; j++) {
 				for (int k = 0; k < grid_size; k++) {
@@ -134,18 +146,22 @@ public class Grid extends JPanel implements Disposable  {
 					switch(type) {
 					case DirtBlock:
 						field[last_point_x][last_point_y][last_point_z] = new DirtBlock();
+						grass.play();
 						updatePosition();
 						break;
 					case WoodBlock:
 						field[last_point_x][last_point_y][last_point_z] = new WoodBlock();
+						wood.play();
 						updatePosition();
 						break;
 					case BerryBlock:
 						field[last_point_x][last_point_y][last_point_z] = new BerryBlock();
+						berry.play();
 						updatePosition();
 						break;
 					case LeavesBlock:
 						field[last_point_x][last_point_y][last_point_z] = new LeavesBlock();
+						leave.play();
 						updatePosition();
 						break;
 					case GlassBlock:
@@ -154,6 +170,7 @@ public class Grid extends JPanel implements Disposable  {
 						break;
 					case StoneBlock:
 						field[last_point_x][last_point_y][last_point_z] = new StoneBlock();
+						stone.play();
 						updatePosition();
 						break;
 					}
