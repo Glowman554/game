@@ -42,6 +42,7 @@ public class Block implements Disposable {
 		float z = instance.transform.getValues()[Matrix4.M23];
 		return new Vector3(x, y, z);
 	}
+	
 
 	public Model getModel() {
 		return model;

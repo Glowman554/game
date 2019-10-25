@@ -10,6 +10,7 @@ public class FPSControll extends FirstPersonCameraController {
 	
 	public Block.Type currentBlock = Type.DirtBlock;
 	private String prefix = "[FPSControll] ";
+	private boolean save = false;
 
 	public FPSControll(Camera camera) {
 		super(camera);
@@ -51,6 +52,9 @@ public class FPSControll extends FirstPersonCameraController {
 			currentBlock = Type.WoodBlock;
 			System.out.println(prefix + "Block select " + currentBlock);
 			break;
+		case Keys.F1:
+			save = true;
+			break;
 		}
 		return super.keyDown(keycode);
 	}
@@ -58,5 +62,14 @@ public class FPSControll extends FirstPersonCameraController {
 	public Type getCurrentBlock() {
 		return currentBlock;
 		
+	}
+	
+	public boolean getSave() {
+		return save;
+		
+	}
+	
+	public void delSaveBol(){
+		save = false;
 	}
 }

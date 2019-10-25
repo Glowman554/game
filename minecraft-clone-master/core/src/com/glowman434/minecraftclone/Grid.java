@@ -1,27 +1,32 @@
 package com.glowman434.minecraftclone;
 
-import java.awt.BorderLayout;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.resolvers.PrefixFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+import com.glowman434.minecraftclone.ui.ProgreassBarUi;
+import com.glowman434.minecraftclone.ui.WorldGenerateUi;
+import com.glowman434.minecraftclone.ui.WorldSaveUi;
 
 public class Grid extends JPanel implements Disposable  {
 	private static final long serialVersionUID = -2420530188123215913L;
-	private final int grid_size = 50;
-	private final float field_size = 5;
-	private Block field[][][];
-	private String prefix = "[Grid] ";
-    private JProgressBar progressBar;
+	private final static int grid_size = 50;
+	private final static float field_size = 5;
+	private boolean generateWorld = true;
+	private static Block field[][][];
+	private static String prefix = "[Grid] ";
     private Sound wood = Gdx.audio.newSound(Gdx.files.internal("sound/wood.ogg"));
     private Sound stone = Gdx.audio.newSound(Gdx.files.internal("sound/stone.ogg"));
     private Sound grass = Gdx.audio.newSound(Gdx.files.internal("sound/grass.ogg"));
@@ -29,46 +34,38 @@ public class Grid extends JPanel implements Disposable  {
     private Sound berry = Gdx.audio.newSound(Gdx.files.internal("sound/berry.ogg"));
 
 
-	public Grid() {
-		
-		
-		super(new BorderLayout());
-		JDialog dialog = new JDialog();
-		dialog.setTitle("Generating World");
-		dialog.setSize(180,70);
-		Random rand = new Random();
-		progressBar = new JProgressBar(0, grid_size - 1);
-		progressBar.setValue(0);
-		progressBar.setStringPainted(true);
-		JPanel panel = new JPanel();
-		panel.add(progressBar);
-		add(panel, BorderLayout.PAGE_START);
-		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		dialog.add(panel);
-		dialog.setVisible(true);
-		
-		
+	public Grid(boolean generate) {
+		generateWorld = generate;
 		field = new Block[grid_size][grid_size][grid_size];
-		for (int i = 0; i < grid_size; i++) {
-			for (int k = 0; k < grid_size; k++) {
-				field[i][0][k] = new DirtBlock();
-				int ran = rand.nextInt(50);
-				switch(ran) {
-				case 1:
-					Tree(i, 1, k, grid_size);
-					break;
-				case 2:
-					Berry(i, 1, k, grid_size);
-					break;
+		if(generateWorld) {
+			Random rand = new Random();
+			WorldGenerateUi dialog = new WorldGenerateUi();
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);		
+			dialog.setMax(grid_size - 1);
+			//field = new Block[grid_size][grid_size][grid_size];
+			for (int i = 0; i < grid_size; i++) {
+				for (int k = 0; k < grid_size; k++) {
+					field[i][0][k] = new DirtBlock();
+					int ran = rand.nextInt(50);
+					switch(ran) {
+					case 1:
+						Tree(i, 1, k, grid_size);
+						break;
+					case 2:
+						Berry(i, 1, k, grid_size);
+						break;
+					}
+					dialog.setValue(i);
 				}
-				progressBar.setValue(i);
 			}
+			dialog.setVisible(false);
+			updatePosition();
 		}
-		dialog.setVisible(false);
-		updatePosition();
 	}
 
-	public void updatePosition() {
+
+	public static void updatePosition() {
 		for (int i = 0; i < grid_size; i++) {
 			for (int j = 0; j < grid_size; j++) {
 				for (int k = 0; k < grid_size; k++) {
@@ -243,5 +240,123 @@ public class Grid extends JPanel implements Disposable  {
 		}catch (Exception e) {
 			System.out.println(prefix + "BerryCreat: "+e);
 		}
+	}
+	
+	public String getBlock(int x, int y, int z){
+		try {
+			String[] block = field[x][y][z].toString().split("@");
+			//System.out.println(block[0]);
+			return block[0];
+		}catch(Exception e) {
+			return "null";
+		}
+		
+	}
+	
+	public void save(String path) throws IOException {
+		String text = "";
+		WorldSaveUi dialog = new WorldSaveUi();
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setVisible(true);		
+		dialog.setMax(grid_size - 1);
+		for (int i = 0; i < grid_size; i++) {
+			for (int j = 0; j < grid_size; j++) {
+				for (int k = 0; k < grid_size; k++) {
+					switch(getBlock(i, j, k)) {
+					case "com.glowman434.minecraftclone.DirtBlock":
+						text = text + "1,";
+						break;
+					case "com.glowman434.minecraftclone.WoodBlock":
+						text = text + "2,";
+						break;
+					case "com.glowman434.minecraftclone.StoneBlock":
+						text = text + "3,";
+						break;
+					case "com.glowman434.minecraftclone.LeavesBlock":
+						text = text + "4,";
+						break;
+					case "com.glowman434.minecraftclone.BerryBlock":
+						text = text + "5,";
+						break;
+					case "com.glowman434.minecraftclone.GlassBlock":
+						text = text + "6,";
+						break;
+					case "null":
+						text = text + "0,";
+						break;
+					}
+					dialog.setValue(i);
+				}
+			}
+		}
+		FileOutputStream stream = new FileOutputStream(path);
+	    for (int i=0; i < text.length(); i++){
+
+	    	stream.write((byte)text.charAt(i));
+
+	      }
+
+	    stream.close();
+	    dialog.setVisible(false);
+
+	    System.out.println(prefix + "Save Done");
+	}
+	
+	public static void load(String path) throws IOException {
+	    int readsofar = 0;
+		String text = null;
+		ProgreassBarUi dialog = new ProgreassBarUi();
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setVisible(true);		
+		dialog.setMax(100);
+		FileReader fr = null;
+		
+		File file = new File(path) ;
+		int len = (int)file.length() ;
+		char[] buf = new char[len] ;
+
+		fr = new FileReader(file);
+		fr.read(buf, 0, len) ;
+		text = new String(buf);
+		//System.out.println(text);
+	    String[] read = text.split(",");
+	    
+	    dialog.setMax(read.length);
+		for (int i = 0; i < grid_size; i++) {
+			for (int j = 0; j < grid_size; j++) {
+				for (int k = 0; k < grid_size; k++) {
+					switch(read[readsofar]) {
+					case "1":
+						field[i][j][k] = new DirtBlock();
+						break;
+					case "2":
+						field[i][j][k] = new WoodBlock();
+						break;
+					case "3":
+						field[i][j][k] = new StoneBlock();
+						break;
+					case "4":
+						field[i][j][k] = new LeavesBlock();
+						break;
+					case "5":
+						field[i][j][k] = new BerryBlock();
+						break;
+					case "6":
+						field[i][j][k] = new GlassBlock();
+						break;
+					case "0":
+						field[i][j][k] = null;
+						break;
+					}
+					updatePosition();
+					readsofar++;
+					dialog.setValue(readsofar);
+					//System.out.println(readsofar);
+					//System.out.println();
+				}
+			}
+		}
+		dialog.setVisible(false);
+		System.out.println(prefix + "Done Load!");
 	}
 }

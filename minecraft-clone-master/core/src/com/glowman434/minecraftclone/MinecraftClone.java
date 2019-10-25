@@ -1,5 +1,7 @@
 package com.glowman434.minecraftclone;
 
+import java.io.IOException;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -24,6 +26,8 @@ public class MinecraftClone extends ApplicationAdapter{
 	public Block.Type currentBlock;
 	public String nameBlock;
 	private String prefix = "[MinecraftClone] ";
+	private boolean load = false;
+	private String pathLoad = null;
 
 	public FPSControll camera_controller;
 	public Environment environment;
@@ -34,8 +38,14 @@ public class MinecraftClone extends ApplicationAdapter{
 	public Texture crosshair;
 	private BitmapFont font;
 	
-	public MinecraftClone(String name) {
+	public MinecraftClone(String name, String path) {
 		username = name;
+		if(path == "null") {
+			load = false;
+		}else {
+			load = true;
+			pathLoad = path;
+		}
 	}
 
 	@Override
@@ -55,9 +65,18 @@ public class MinecraftClone extends ApplicationAdapter{
 		camera.near = camera_near;
 		camera.far = camera_far;
 		camera.update();
-
-		grid = new Grid();
+		
 		crosshair = new Texture(Gdx.files.internal("interface/Crosshair.png"));
+		if(load) {
+			try {
+				grid = new Grid(false);
+				Grid.load(pathLoad);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else {
+			grid = new Grid(true);
+		}
 
 		camera_controller = new FPSControll(camera) {
 			@Override
@@ -120,6 +139,15 @@ public class MinecraftClone extends ApplicationAdapter{
 		font.draw(sprite_batch, nameBlock, 10, Gdx.graphics.getHeight() - 56);
 		sprite_batch.draw(crosshair, crosshair_x, crosshair_y, crosshair_size, crosshair_size);
 		sprite_batch.end();
+		boolean bol = camera_controller.getSave();
+		if(bol) {
+			try {
+				grid.save("default.msave");
+				camera_controller.delSaveBol();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
