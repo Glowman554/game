@@ -8,7 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import os, urllib.request, UpdateManager, easygui, GameManager
+import os, urllib.request, UpdateManager, easygui, GameManager, FileManager
 
 versionLink = "https://raw.githubusercontent.com/Glowman554/game/master/version.nv2"
 jarLink = "https://raw.githubusercontent.com/Glowman554/game/master/game.jar"
@@ -84,6 +84,7 @@ class Ui_MainWindow(object):
 
     def Play(self):
         name = self.usernameEdit.toPlainText()
+        FileManager.save("username.name", name)
         if(name == ""):
             easygui.msgbox("Bitte nutzernamen eingeben", "Error")
         else:
@@ -119,5 +120,6 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
+    ui.usernameEdit.setText(FileManager.load("username.name"))
     UpdateManager.init(versionLink)
     sys.exit(run())
