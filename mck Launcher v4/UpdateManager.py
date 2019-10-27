@@ -44,4 +44,4 @@ def thread(link):
             wget.download(link, "version.nv")
         except:
             easygui.msgbox("Keine Verbindung zum internet.")
-        sleep(60)
+        sleep(5)
