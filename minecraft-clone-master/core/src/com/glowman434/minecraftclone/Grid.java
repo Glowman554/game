@@ -1,7 +1,6 @@
 package com.glowman434.minecraftclone;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,8 +8,8 @@ import java.util.Random;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.loaders.resolvers.PrefixFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -22,7 +21,7 @@ import com.glowman434.minecraftclone.ui.WorldSaveUi;
 
 public class Grid extends JPanel implements Disposable  {
 	private static final long serialVersionUID = -2420530188123215913L;
-	private final static int grid_size = 50;
+	private final static int grid_size = 21;
 	private final static float field_size = 5;
 	private boolean generateWorld = true;
 	private static Block field[][][];
@@ -302,7 +301,7 @@ public class Grid extends JPanel implements Disposable  {
 	    System.out.println(prefix + "Save Done");
 	}
 	
-	public static void load(String path) throws IOException {
+	public void load(String path) throws IOException {
 	    int readsofar = 0;
 		String text = null;
 		ProgreassBarUi dialog = new ProgreassBarUi();
@@ -317,6 +316,7 @@ public class Grid extends JPanel implements Disposable  {
 
 		fr = new FileReader(file);
 		fr.read(buf, 0, len) ;
+		fr.close();
 		text = new String(buf);
 		//System.out.println(text);
 	    String[] read = text.split(",");

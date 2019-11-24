@@ -1,6 +1,10 @@
 package com.glowman434.minecraftclone;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.xml.crypto.Data;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -13,6 +17,7 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.glowman434.minecraftclone.ui.LoadUi;
 
 public class MinecraftClone extends ApplicationAdapter{
 	public final float field_of_view = 67;
@@ -38,15 +43,10 @@ public class MinecraftClone extends ApplicationAdapter{
 	public Texture crosshair;
 	private BitmapFont font;
 	
-	public MinecraftClone(String name, String path) {
+	public MinecraftClone(String name) {
 		username = name;
-		if(path == "null") {
-			load = false;
-		}else {
-			load = true;
-			pathLoad = path;
-		}
 	}
+
 
 	@Override
 	public void create() {
@@ -67,16 +67,7 @@ public class MinecraftClone extends ApplicationAdapter{
 		camera.update();
 		
 		crosshair = new Texture(Gdx.files.internal("interface/Crosshair.png"));
-		if(load) {
-			try {
-				grid = new Grid(false);
-				Grid.load(pathLoad);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}else {
-			grid = new Grid(true);
-		}
+		grid = new Grid(true);
 
 		camera_controller = new FPSControll(camera) {
 			@Override
@@ -140,13 +131,29 @@ public class MinecraftClone extends ApplicationAdapter{
 		sprite_batch.draw(crosshair, crosshair_x, crosshair_y, crosshair_size, crosshair_size);
 		sprite_batch.end();
 		boolean bol = camera_controller.getSave();
+		boolean bol2 = camera_controller.getLoad();
 		if(bol) {
 			try {
-				grid.save("default.msave");
+				SimpleDateFormat date=new SimpleDateFormat("HH-mm-ss");
+				String savedate=date.format(new Date());
+				System.out.println(savedate);
+				grid.save(savedate + ".msave");
 				camera_controller.delSaveBol();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+		
+		if(bol2) {
+			LoadUi ui = new LoadUi();
+			String path = ui.chose();
+			try {
+				grid.load(path);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			camera_controller.delLoadBol();
+			
 		}
 	}
 

@@ -11,6 +11,7 @@ public class FPSControll extends FirstPersonCameraController {
 	public Block.Type currentBlock = Type.DirtBlock;
 	private String prefix = "[FPSControll] ";
 	private boolean save = false;
+	private boolean load = false;
 
 	public FPSControll(Camera camera) {
 		super(camera);
@@ -55,6 +56,9 @@ public class FPSControll extends FirstPersonCameraController {
 		case Keys.F1:
 			save = true;
 			break;
+		case Keys.F2:
+			load = true;
+			break;
 		}
 		return super.keyDown(keycode);
 	}
@@ -69,7 +73,16 @@ public class FPSControll extends FirstPersonCameraController {
 		
 	}
 	
+	public boolean getLoad() {
+		return load;
+		
+	}
+	
 	public void delSaveBol(){
 		save = false;
+	}
+	
+	public void delLoadBol(){
+		load = false;
 	}
 }
