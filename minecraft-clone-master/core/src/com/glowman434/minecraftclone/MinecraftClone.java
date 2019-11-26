@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.xml.crypto.Data;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -31,8 +29,7 @@ public class MinecraftClone extends ApplicationAdapter{
 	public Block.Type currentBlock;
 	public String nameBlock;
 	private String prefix = "[MinecraftClone] ";
-	private boolean load = false;
-	private String pathLoad = null;
+
 
 	public FPSControll camera_controller;
 	public Environment environment;
@@ -134,7 +131,7 @@ public class MinecraftClone extends ApplicationAdapter{
 		boolean bol2 = camera_controller.getLoad();
 		if(bol) {
 			try {
-				SimpleDateFormat date=new SimpleDateFormat("HH-mm-ss");
+				SimpleDateFormat date=new SimpleDateFormat("yyyy.MM.dd.HH-mm-ss");
 				String savedate=date.format(new Date());
 				System.out.println(savedate);
 				grid.save(savedate + ".msave");
@@ -151,6 +148,7 @@ public class MinecraftClone extends ApplicationAdapter{
 				grid.load(path);
 			} catch (IOException e) {
 				e.printStackTrace();
+				Gdx.app.exit();
 			}
 			camera_controller.delLoadBol();
 			
