@@ -15,7 +15,11 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.glowman434.minecraftclone.Grid;
+import com.glowman434.minecraftclone.serverhandler.ServerGetReplay;
 import com.glowman434.minecraftclone.ui.LoadUi;
+import com.glowman434.minecraftclone.ui.ServerHost;
+import com.glowman434.minecraftclone.ui.ServerPort;
 
 public class MinecraftClone extends ApplicationAdapter{
 	public final float field_of_view = 67;
@@ -29,7 +33,10 @@ public class MinecraftClone extends ApplicationAdapter{
 	public Block.Type currentBlock;
 	public String nameBlock;
 	private String prefix = "[MinecraftClone] ";
-
+	
+	public String host = null;
+	public int port = 0;
+	public boolean online = false;
 
 	public FPSControll camera_controller;
 	public Environment environment;
@@ -70,9 +77,9 @@ public class MinecraftClone extends ApplicationAdapter{
 			@Override
 			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 				if (button == 0) {
-					grid.editBoxByRayCast(camera.position, camera.direction, currentBlock);
+					grid.editBoxByRayCast(camera.position, camera.direction, currentBlock, online, host, port);
 				} else if (button == 1) {
-					grid.editBoxByRayCast(camera.position, camera.direction, null);
+					grid.editBoxByRayCast(camera.position, camera.direction, null, online, host, port);
 				}
 				return super.touchDown(screenX, screenY, pointer, button);
 			}
@@ -129,6 +136,7 @@ public class MinecraftClone extends ApplicationAdapter{
 		sprite_batch.end();
 		boolean bol = camera_controller.getSave();
 		boolean bol2 = camera_controller.getLoad();
+		boolean bol3 = camera_controller.getOnline();
 		if(bol) {
 			try {
 				SimpleDateFormat date=new SimpleDateFormat("yyyy.MM.dd.HH-mm-ss");
@@ -152,6 +160,33 @@ public class MinecraftClone extends ApplicationAdapter{
 			}
 			camera_controller.delLoadBol();
 			
+		}
+		
+		if(bol3) {
+			ServerHost gethost = new ServerHost();
+			ServerPort getport = new ServerPort();
+			ServerGetReplay r = new ServerGetReplay();
+			
+			host = gethost.getServerHost();
+			port = Integer.parseInt(getport.getServerPort());
+			
+			String world = r.GetReplay(host, port, "GetWorld");
+			grid.loadStr(world);
+			
+			online = true;
+			
+			camera_controller.delOnlineBol();
+		}
+		
+		if(online) {
+			ServerGetReplay r = new ServerGetReplay();
+			String temp = r.GetReplay(host, port, "GetEvent");
+			
+			if(temp.contains("SetBlock")) {
+				//System.out.println(temp);
+				String[] t = temp.split(" ");
+				grid.SetBlock(t[1], Integer.parseInt(t[2]), Integer.parseInt(t[3]), Integer.parseInt(t[4]));
+			}
 		}
 	}
 

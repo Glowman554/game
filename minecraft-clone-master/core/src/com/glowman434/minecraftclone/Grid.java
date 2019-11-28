@@ -15,6 +15,14 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+import com.glowman434.minecraftclone.BerryBlock;
+import com.glowman434.minecraftclone.Block;
+import com.glowman434.minecraftclone.DirtBlock;
+import com.glowman434.minecraftclone.GlassBlock;
+import com.glowman434.minecraftclone.LeavesBlock;
+import com.glowman434.minecraftclone.StoneBlock;
+import com.glowman434.minecraftclone.WoodBlock;
+import com.glowman434.minecraftclone.serverhandler.ServerGetReplay;
 import com.glowman434.minecraftclone.ui.ProgreassBarUi;
 import com.glowman434.minecraftclone.ui.WorldGenerateUi;
 import com.glowman434.minecraftclone.ui.WorldSaveUi;
@@ -31,6 +39,7 @@ public class Grid extends JPanel implements Disposable  {
     private Sound grass = Gdx.audio.newSound(Gdx.files.internal("sound/grass.ogg"));
     private Sound leave = Gdx.audio.newSound(Gdx.files.internal("sound/leave.ogg"));
     private Sound berry = Gdx.audio.newSound(Gdx.files.internal("sound/berry.ogg"));
+	private ServerGetReplay r = new ServerGetReplay();
 
 
 	public Grid(boolean generate) {
@@ -110,7 +119,7 @@ public class Grid extends JPanel implements Disposable  {
 		}
 	}
 
-	public void editBoxByRayCast(Vector3 start_point, Vector3 direction, Block.Type type) {
+	public void editBoxByRayCast(Vector3 start_point, Vector3 direction, Block.Type type, boolean online, String host, int port) {
 		int last_point_x = 0;
 		int last_point_y = 0;
 		int last_point_z = 0;
@@ -136,36 +145,43 @@ public class Grid extends JPanel implements Disposable  {
 					if (field[x][y][z] != null) {
 						field[x][y][z].dispose();
 						field[x][y][z] = null;
+						r.SetBlock(host, port, 0, x, y, z);
 						updatePosition();
 					}
 				}else {
 					switch(type) {
 					case DirtBlock:
 						field[last_point_x][last_point_y][last_point_z] = new DirtBlock();
+						if(online) r.SetBlock(host, port, 1, last_point_x, last_point_y, last_point_z);
 						grass.play();
 						updatePosition();
 						break;
 					case WoodBlock:
 						field[last_point_x][last_point_y][last_point_z] = new WoodBlock();
+						if(online) r.SetBlock(host, port, 2, last_point_x, last_point_y, last_point_z);
 						wood.play();
 						updatePosition();
 						break;
 					case BerryBlock:
 						field[last_point_x][last_point_y][last_point_z] = new BerryBlock();
+						if(online) r.SetBlock(host, port, 5, last_point_x, last_point_y, last_point_z);
 						berry.play();
 						updatePosition();
 						break;
 					case LeavesBlock:
 						field[last_point_x][last_point_y][last_point_z] = new LeavesBlock();
+						if(online) r.SetBlock(host, port, 4, last_point_x, last_point_y, last_point_z);
 						leave.play();
 						updatePosition();
 						break;
 					case GlassBlock:
 						field[last_point_x][last_point_y][last_point_z] = new GlassBlock();
+						if(online) r.SetBlock(host, port, 6, last_point_x, last_point_y, last_point_z);
 						updatePosition();
 						break;
 					case StoneBlock:
 						field[last_point_x][last_point_y][last_point_z] = new StoneBlock();
+						if(online) r.SetBlock(host, port, 3, last_point_x, last_point_y, last_point_z);
 						stone.play();
 						updatePosition();
 						break;
@@ -359,4 +375,81 @@ public class Grid extends JPanel implements Disposable  {
 		dialog.setVisible(false);
 		System.out.println(prefix + "Done Load!");
 	}
+	
+	public void loadStr(String str) {
+	    int readsofar = 0;
+		ProgreassBarUi dialog = new ProgreassBarUi();
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setVisible(true);		
+		dialog.setMax(100);
+		;
+		//System.out.println(text);
+	    String[] read = str.split(",");
+	    
+	    dialog.setMax(read.length);
+		for (int i = 0; i < grid_size; i++) {
+			for (int j = 0; j < grid_size; j++) {
+				for (int k = 0; k < grid_size; k++) {
+					switch(read[readsofar]) {
+					case "1":
+						field[i][j][k] = new DirtBlock();
+						break;
+					case "2":
+						field[i][j][k] = new WoodBlock();
+						break;
+					case "3":
+						field[i][j][k] = new StoneBlock();
+						break;
+					case "4":
+						field[i][j][k] = new LeavesBlock();
+						break;
+					case "5":
+						field[i][j][k] = new BerryBlock();
+						break;
+					case "6":
+						field[i][j][k] = new GlassBlock();
+						break;
+					case "0":
+						field[i][j][k] = null;
+						break;
+					}
+					updatePosition();
+					readsofar++;
+					dialog.setValue(readsofar);
+					//System.out.println(readsofar);
+					//System.out.println();
+				}
+			}
+		}
+		dialog.setVisible(false);
+		System.out.println(prefix + "Done Load!");
+	}
+
+	public void SetBlock(String block, int i, int j, int k) {
+		switch(block) {
+		case "1":
+			field[i][j][k] = new DirtBlock();
+			break;
+		case "2":
+			field[i][j][k] = new WoodBlock();
+			break;
+		case "3":
+			field[i][j][k] = new StoneBlock();
+			break;
+		case "4":
+			field[i][j][k] = new LeavesBlock();
+			break;
+		case "5":
+			field[i][j][k] = new BerryBlock();
+			break;
+		case "6":
+			field[i][j][k] = new GlassBlock();
+			break;
+		case "0":
+			field[i][j][k] = null;
+			break;
+		}
+		updatePosition();
+	}
+
 }

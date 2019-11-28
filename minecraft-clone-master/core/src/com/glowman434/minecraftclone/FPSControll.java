@@ -12,6 +12,7 @@ public class FPSControll extends FirstPersonCameraController {
 	private String prefix = "[FPSControll] ";
 	private boolean save = false;
 	private boolean load = false;
+	private boolean online = false;
 
 	public FPSControll(Camera camera) {
 		super(camera);
@@ -59,6 +60,9 @@ public class FPSControll extends FirstPersonCameraController {
 		case Keys.F2:
 			load = true;
 			break;
+		case Keys.F3:
+			online = true;
+			break;
 		}
 		return super.keyDown(keycode);
 	}
@@ -78,11 +82,20 @@ public class FPSControll extends FirstPersonCameraController {
 		
 	}
 	
+	public boolean getOnline() {
+		return online;
+		
+	}
+	
 	public void delSaveBol(){
 		save = false;
 	}
 	
 	public void delLoadBol(){
 		load = false;
+	}
+	
+	public void delOnlineBol(){
+		online = false;
 	}
 }
