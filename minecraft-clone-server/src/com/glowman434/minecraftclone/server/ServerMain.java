@@ -27,21 +27,21 @@ public class ServerMain extends Thread {
 				  String command = reader.readLine();
 				  
 				  switch(command) {
-				  	case "save":
-				  		world.save("world.msave");
-				  		break;
-				  	case "load":
-				  		world.load("world.msave");
-				  		break;
-				  	case "exit":
-				  		System.exit(0);
-				  		break;
-				  	case "players":
-				  		System.out.println(prefix + PlayersLogin);
-				  		break;
-				  	default:
-				  		System.out.println(prefix + "Command not found!");
-				  		break;
+				  case "save":
+					  world.save("world.msave");
+					  break;
+				  case "load":
+					  world.load("world.msave");
+					  break;
+				  case "exit":
+					  System.exit(0);
+					  break;
+				  case "players":
+					  System.out.println(prefix + PlayersLogin);
+					  break;
+				  default:
+					  System.out.println(prefix + "Command not found!");
+					  break;
 				  }
 				  
 			  }
@@ -83,6 +83,18 @@ public class ServerMain extends Thread {
                 case "GetEvent":
                 	writer.println(Event);
                 	break;
+			  	case "save":
+			  		world.save("world.msave");
+			  		break;
+			  	case "load":
+			  		world.load("world.msave");
+			  		break;
+			  	case "exit":
+			  		System.exit(0);
+			  		break;
+			  	case "players":
+			  		writer.println(prefix + PlayersLogin);
+			  		break;
                 }
                 
                 if(text.contains("SetBlock")) {
