@@ -136,7 +136,7 @@ public class Grid{
 
 	    stream.close();
 
-	    System.out.println(prefix + "Save Done");
+	    System.out.println(prefix + "Save Done!");
 	}
 	
 	public void load(String path) throws IOException {

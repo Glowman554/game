@@ -169,7 +169,7 @@ public class MinecraftClone extends ApplicationAdapter{
 			
 			host = gethost.getServerHost();
 			port = Integer.parseInt(getport.getServerPort());
-			
+			r.GetReplay(host, port, "LoginPlayer " + username);
 			String world = r.GetReplay(host, port, "GetWorld");
 			grid.loadStr(world);
 			
