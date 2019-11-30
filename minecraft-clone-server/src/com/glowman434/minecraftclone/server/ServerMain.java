@@ -11,13 +11,13 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Random;
 
 public class ServerMain extends Thread {
 	public static Grid world = new Grid(true);
 	private static String prefix = "[ServerMain] ";
 	static String Event = null;
 	public static HashMap<String, String> PlayersLogin = new HashMap<String, String>();
+	public static int port = 0;
 	
 	
 	  public void run() {
@@ -52,9 +52,12 @@ public class ServerMain extends Thread {
 	
 
     public static void main(String[] args) {
-    	Random ran = new Random();
-        int port = ran.nextInt(2000);
-    	//int port = 200;
+    	if (args.length < 1) {
+    		port = 90;
+    	}else {
+    		port = Integer.parseInt(args[0]);
+    	}
+
         
  
         try (ServerSocket serverSocket = new ServerSocket(port)) {
@@ -83,16 +86,16 @@ public class ServerMain extends Thread {
                 case "GetEvent":
                 	writer.println(Event);
                 	break;
-			  	case "save":
+			  	case "SaveWorld":
 			  		world.save("world.msave");
 			  		break;
-			  	case "load":
+			  	case "LoadWorld":
 			  		world.load("world.msave");
 			  		break;
-			  	case "exit":
+			  	case "ExitServer":
 			  		System.exit(0);
 			  		break;
-			  	case "players":
+			  	case "GetPlayers":
 			  		writer.println(prefix + PlayersLogin);
 			  		break;
                 }
