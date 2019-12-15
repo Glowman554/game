@@ -187,7 +187,12 @@ public class Grid extends JPanel implements Disposable  {
 						break;
 					case GrassBlock:
 						field[last_point_x][last_point_y][last_point_z] = new GrassBlock();
-						if(online) r.SetBlock(host, port, 3, last_point_x, last_point_y, last_point_z);
+						if(online) r.SetBlock(host, port, 7, last_point_x, last_point_y, last_point_z);
+						grass.play();
+						updatePosition();
+						break;
+					case TestBlock:
+						field[last_point_x][last_point_y][last_point_z] = new TestBlock();
 						grass.play();
 						updatePosition();
 						break;
@@ -305,6 +310,9 @@ public class Grid extends JPanel implements Disposable  {
 					case "com.glowman434.minecraftclone.GrassBlock":
 						text = text + "7,";
 						break;
+					case "com.glowman434.minecraftclone.TestBlock":
+						text = text + "8,";
+						break;
 					case "null":
 						text = text + "0,";
 						break;
@@ -372,6 +380,9 @@ public class Grid extends JPanel implements Disposable  {
 					case "7":
 						field[i][j][k] = new GrassBlock();
 						break;
+					case "8":
+						field[i][j][k] = new TestBlock();
+						break;
 					case "0":
 						field[i][j][k] = null;
 						break;
@@ -424,6 +435,9 @@ public class Grid extends JPanel implements Disposable  {
 					case "7":
 						field[i][j][k] = new GrassBlock();
 						break;
+					case "8":
+						field[i][j][k] = new TestBlock();
+						break;
 					case "0":
 						field[i][j][k] = null;
 						break;
@@ -462,6 +476,9 @@ public class Grid extends JPanel implements Disposable  {
 			break;
 		case "7":
 			field[i][j][k] = new GrassBlock();
+			break;
+		case "8":
+			field[i][j][k] = new TestBlock();
 			break;
 		case "0":
 			field[i][j][k] = null;

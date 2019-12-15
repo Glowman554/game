@@ -62,6 +62,7 @@ public class Block implements Disposable {
 		LeavesBlock,
 		BerryBlock, 
 		GlassBlock,
-		GrassBlock;
+		GrassBlock, 
+		TestBlock;
 	}
 }
